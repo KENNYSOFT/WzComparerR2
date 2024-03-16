@@ -126,13 +126,14 @@ namespace WzComparerR2.CharaSim
             LoadedExclusiveEquips.Clear();
         }
 
-        public static int GetActionDelay(string actionName)
+        public static int GetActionDelay(string actionName, Wz_Node wzNode = null)
         {
             if (string.IsNullOrEmpty(actionName))
             {
                 return 0;
             }
-            Wz_Node actionNode = PluginManager.FindWz("Character/00002000.img/" + actionName);
+            Wz_Node actionNode = wzNode == null ? PluginManager.FindWz("Character/00002000.img/" + actionName) :
+                PluginManager.FindWz("Character/00002000.img/" + actionName, wzNode.GetNodeWzFile());
             if (actionNode == null)
             {
                 return 0;

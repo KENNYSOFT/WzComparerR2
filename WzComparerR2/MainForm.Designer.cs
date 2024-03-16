@@ -205,6 +205,7 @@
             this.superTabControlPanel2 = new DevComponents.DotNetBar.SuperTabControlPanel();
             this.chkResolvePngLink = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.chkEnableDarkMode = new DevComponents.DotNetBar.Controls.CheckBoxX();
+            this.chkOutputSkillTooltip = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.chkOutputRemovedImg = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.chkOutputAddedImg = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
@@ -2355,6 +2356,7 @@
             // 
             this.superTabControlPanel2.Controls.Add(this.chkHashPngFileName);
             this.superTabControlPanel2.Controls.Add(this.chkEnableDarkMode);
+            this.superTabControlPanel2.Controls.Add(this.chkOutputSkillTooltip);
             this.superTabControlPanel2.Controls.Add(this.chkResolvePngLink);
             this.superTabControlPanel2.Controls.Add(this.chkOutputRemovedImg);
             this.superTabControlPanel2.Controls.Add(this.chkOutputAddedImg);
@@ -2396,6 +2398,20 @@
             this.chkEnableDarkMode.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.chkEnableDarkMode.TabIndex = 9;
             this.chkEnableDarkMode.Text = "다크 모드 활성화";
+            // 
+            // 
+            // chkSaveSkillTooltip
+            // 
+            // 
+            // 
+            // 
+            this.chkOutputSkillTooltip.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.chkOutputSkillTooltip.Location = new System.Drawing.Point(430, 34);
+            this.chkOutputSkillTooltip.Name = "chkSaveSkillTooltip";
+            this.chkOutputSkillTooltip.Size = new System.Drawing.Size(135, 23);
+            this.chkOutputSkillTooltip.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.chkOutputSkillTooltip.TabIndex = 11;
+            this.chkOutputSkillTooltip.Text = "스킬 툴팁 저장";
             // 
             // chkOutputRemovedImg
             // 
@@ -3258,6 +3274,7 @@
         private DevComponents.DotNetBar.CheckBoxItem checkBoxItemRegex1;
         private DevComponents.DotNetBar.CheckBoxItem checkBoxItemRegex2;
         private DevComponents.DotNetBar.Controls.CheckBoxX chkEnableDarkMode;
+        private DevComponents.DotNetBar.Controls.CheckBoxX chkOutputSkillTooltip;
         private DevComponents.DotNetBar.Controls.CheckBoxX chkHashPngFileName;
         private DevComponents.Editors.ComboItem comboItem19;
     }

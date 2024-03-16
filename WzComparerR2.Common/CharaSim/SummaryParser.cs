@@ -22,6 +22,7 @@ namespace WzComparerR2.CharaSim
             int idx = 0;
             StringBuilder sb = new StringBuilder();
             bool beginC = false;
+            bool beginG = false;
             while (idx < H.Length)
             {
                 if (H[idx] == '#')
@@ -136,6 +137,18 @@ namespace WzComparerR2.CharaSim
                         beginC = true;
                         sb.Append(param.CStart);
                         idx += 2;
+                    }
+                    else if (idx + 1 < H.Length && H[idx + 1] == 'g')
+                    {
+                        beginG = true;
+                        sb.Append(param.GStart);
+                        idx += 2;
+                    }
+                    else if (beginG)
+                    {
+                        beginG = false;
+                        sb.Append(param.GEnd);
+                        idx++;
                     }
                     else if (beginC)
                     {

@@ -68,7 +68,7 @@ namespace WzComparerR2
             }
         }
 
-        public static BitmapOrigin CreateFromNode(Wz_Node node, GlobalFindNodeFunction findNode)
+        public static BitmapOrigin CreateFromNode(Wz_Node node, GlobalFindNodeFunction findNode, Wz_File wzf = null)
         {
             BitmapOrigin bp = new BitmapOrigin();
             if (node == null)
@@ -82,7 +82,7 @@ namespace WzComparerR2
             }
 
             //获取linkNode
-            var linkNode = node.GetLinkedSourceNode(findNode);
+            var linkNode = node.GetLinkedSourceNode(findNode, wzf);
             Wz_Png png = linkNode?.GetValue<Wz_Png>() ?? (Wz_Png)node.Value;
 
             bp.Bitmap = png?.ExtractPng();
