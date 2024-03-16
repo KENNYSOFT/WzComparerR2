@@ -171,8 +171,11 @@
             this.buttonItemAutoSaveFolder = new DevComponents.DotNetBar.ButtonItem();
             this.labelItemAutoSaveFolder = new DevComponents.DotNetBar.LabelItem();
             this.buttonItemGif = new DevComponents.DotNetBar.ButtonItem();
+            this.buttonItemGif2 = new DevComponents.DotNetBar.ButtonItem();
             this.itemContainer36 = new DevComponents.DotNetBar.ItemContainer();
+            this.itemContainer44 = new DevComponents.DotNetBar.ItemContainer();
             this.buttonItemGifSetting = new DevComponents.DotNetBar.ButtonItem();
+            this.buttonDisableOverlayAni = new DevComponents.DotNetBar.ButtonItem();
             this.textBoxX1 = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.expandableSplitter1 = new DevComponents.DotNetBar.ExpandableSplitter();
             this.panelEx1 = new DevComponents.DotNetBar.PanelEx();
@@ -1935,7 +1938,8 @@
             this.cmbItemAniNames,
             this.cmbItemSkins,
             this.buttonItemSaveImage,
-            this.buttonItemGif});
+            this.buttonItemGif,
+            this.buttonItemGif2});
             this.ribbonBar5.Location = new System.Drawing.Point(0, 202);
             this.ribbonBar5.Name = "ribbonBar5";
             this.ribbonBar5.Size = new System.Drawing.Size(292, 26);
@@ -2041,6 +2045,15 @@
             this.buttonItemGif.Text = "애니메이션 활성화";
             this.buttonItemGif.Click += new System.EventHandler(this.buttonItemGif_Click);
             // 
+            // buttonItemGif2
+            // 
+            this.buttonItemGif2.Name = "buttonItemGif2";
+            this.buttonItemGif2.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
+            this.itemContainer44});
+            this.buttonItemGif2.SubItemsExpandWidth = 14;
+            this.buttonItemGif2.Text = "애니메이션 중첩";
+            this.buttonItemGif2.Click += new System.EventHandler(this.buttonItemGif2_Click);
+            // 
             // itemContainer36
             // 
             // 
@@ -2061,6 +2074,27 @@
             this.buttonItemGifSetting.Name = "buttonItemGifSetting";
             this.buttonItemGifSetting.Text = "애니메이션 설정";
             this.buttonItemGifSetting.Click += new System.EventHandler(this.buttonItemGifSetting_Click);
+            //
+            // itemContainer44
+            // 
+            // 
+            // 
+            // 
+            this.itemContainer44.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.itemContainer44.LayoutOrientation = DevComponents.DotNetBar.eOrientation.Vertical;
+            this.itemContainer44.Name = "itemContainer44";
+            this.itemContainer44.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
+            this.buttonDisableOverlayAni});
+            // 
+            // 
+            // 
+            this.itemContainer44.TitleStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // buttonDisableOverlayAni
+            // 
+            this.buttonDisableOverlayAni.Name = "buttonDisableOverlayAni";
+            this.buttonDisableOverlayAni.Text = "중첩 비활성화";
+            this.buttonDisableOverlayAni.Click += new System.EventHandler(this.buttonDisableOverlayAni_Click);
             // 
             // textBoxX1
             // 
@@ -3176,8 +3210,11 @@
         private DevComponents.DotNetBar.ItemContainer itemContainer34;
         private DevComponents.DotNetBar.ItemContainer itemContainer35;
         private DevComponents.DotNetBar.ButtonItem buttonItemGif;
+        private DevComponents.DotNetBar.ButtonItem buttonItemGif2;
         private DevComponents.DotNetBar.ItemContainer itemContainer36;
+        private DevComponents.DotNetBar.ItemContainer itemContainer44;
         private DevComponents.DotNetBar.ButtonItem buttonItemGifSetting;
+        private DevComponents.DotNetBar.ButtonItem buttonDisableOverlayAni;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
         private System.Windows.Forms.ToolStripMenuItem tsmi2ExpandAll;
         private System.Windows.Forms.ToolStripMenuItem tsmi2CollapseAll;

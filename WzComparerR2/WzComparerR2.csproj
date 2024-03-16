@@ -188,6 +188,12 @@
     <Compile Include="FrmAbout.Designer.cs">
       <DependentUpon>FrmAbout.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmOverlayAniOptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmOverlayAniOptions.Designer.cs">
+      <DependentUpon>FrmOverlayAniOptions.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmGifMaker.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -278,6 +284,9 @@
   <ItemGroup>
     <EmbeddedResource Include="FrmAbout.resx">
       <DependentUpon>FrmAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmOverlayAniOptions.resx">
+      <DependentUpon>FrmOverlayAniOptions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmGifMaker.resx">
       <DependentUpon>FrmGifMaker.cs</DependentUpon>

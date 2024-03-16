@@ -59,6 +59,8 @@ namespace WzComparerR2
 
         public void ShowImage(Wz_Png png)
         {
+            if (this.ShowOverlayAni) return; // 애니메이션 중첩 중일때는 자동 png 미리보기 없음
+
             //添加到动画控件
             var frame = new Animation.Frame()
             {
@@ -89,19 +91,33 @@ namespace WzComparerR2
             return MultiFrameAnimationData.CreateFromNode(node, this.GraphicsDevice, PluginBase.PluginManager.FindWz);
         }
 
+        public FrameAnimationData LoadPngFrameAnimation(Wz_Node node)
+        {
+            return FrameAnimationData.CreateFromPngNode(node, this.GraphicsDevice, PluginBase.PluginManager.FindWz);
+        }
+
         public void ShowAnimation(FrameAnimationData data)
         {
             this.ShowAnimation(new FrameAnimator(data));
+            this.ShowOverlayAni = false;
         }
 
         public void ShowAnimation(SpineAnimationData data)
         {
             this.ShowAnimation(new SpineAnimator(data));
+            this.ShowOverlayAni = false;
         }
 
         public void ShowAnimation(MultiFrameAnimationData data)
         {
             this.ShowAnimation(new MultiFrameAnimator(data));
+            this.ShowOverlayAni = false;
+        }
+
+        // 애니메이션 중첩
+        public void ShowOverlayAnimation(FrameAnimationData data, bool isPngFrameAni = false)
+        {
+            this.ShowOverlayAnimation(new FrameAnimator(data), isPngFrameAni);
         }
 
         public void ShowAnimation(AnimationItem animator)
@@ -112,6 +128,70 @@ namespace WzComparerR2
             }
 
             this.Items.Add(animator);
+
+            if (this.AutoAdjustPosition)
+            {
+                this.AdjustPosition();
+            }
+
+            this.Invalidate();
+        }
+
+        // 애니메이션 중첩
+        public void ShowOverlayAnimation(AnimationItem animator, bool isPngFrameAni)
+        {
+            if (!ShowOverlayAni)
+            {
+                ShowOverlayAni = !ShowOverlayAni;
+                this.Items.Clear();
+            }
+
+            FrameAnimator baseAniItem;
+            if (this.Items.Count == 0)
+            {
+                var tmpFrame = new Frame(null, Point.Zero, 0, 0, true);
+                var tmpFrameAnimationData = new FrameAnimationData();
+                tmpFrameAnimationData.Frames.Add(tmpFrame);
+                baseAniItem = new FrameAnimator(tmpFrameAnimationData);
+            }
+            else baseAniItem = (FrameAnimator)this.Items[0];
+
+            FrameAnimator aniItem = (FrameAnimator)animator;
+
+            var frmOverlayAniOptions = new FrmOverlayAniOptions(0, aniItem.Data.Frames.Count - 1, isPngFrameAni);
+            int delayOffset = 0;
+            int moveX = 0;
+            int moveY = 0;
+            int frameStart = 0;
+            int frameEnd = 0;
+            int pngDelay = 100;
+
+            // 정보 받아오기
+            if (frmOverlayAniOptions.ShowDialog() == DialogResult.OK)
+            {
+                frmOverlayAniOptions.GetValues(out delayOffset, out moveX, out moveY, out frameStart, out frameEnd, out pngDelay);
+                frameStart = frameStart == -1 ? 0 : frameStart;
+                frameEnd = frameEnd == -1 ? aniItem.Data.Frames.Count - 1 : frameEnd;
+
+                if (frameStart > frameEnd) return;
+            }
+            else return;
+
+            // png 하나의 딜레이 설정
+            if (isPngFrameAni)
+            {
+                if (pngDelay == 0) return;
+                aniItem.Data.Frames[0].Delay = pngDelay;
+            }
+
+            this.Items.Clear();
+
+            var config = ImageHandlerConfig.Default;
+            var newAniItem = new FrameAnimator(FrameAnimationData.MergeAnimationData(baseAniItem.Data, aniItem.Data,
+                    this.GraphicsDevice, System.Drawing.Color.FromArgb(config.BackgroundType.Value == ImageBackgroundType.Transparent ? 0 : 255, config.BackgroundColor.Value).ToXnaColor(),
+                    delayOffset, moveX, moveY, frameStart, frameEnd));
+
+            this.Items.Add(newAniItem);
 
             if (this.AutoAdjustPosition)
             {
@@ -528,6 +608,10 @@ namespace WzComparerR2
         private void UpdateInfoText()
         {
             this.sbInfo.Clear();
+            if (ShowOverlayAni)
+            {
+                this.sbInfo.Append("애니메이션 중첩 중\n");
+            }
             if (this.Items.Count > 0)
             {
                 var aniItem = this.Items[0];

@@ -38,6 +38,7 @@ namespace WzComparerR2.Controls
         public bool MouseDragEnabled { get; set; }
         public bool MouseDragSaveEnabled { get; set; }
         public bool ShowPositionGridOnDrag { get; set; }
+        public bool ShowOverlayAni { get; set; } = false;
 
         public float GlobalScale
         {
