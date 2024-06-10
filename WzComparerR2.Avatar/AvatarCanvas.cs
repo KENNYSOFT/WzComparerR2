@@ -36,6 +36,8 @@ namespace WzComparerR2.Avatar
         public bool HairCover { get; set; }
         public bool ShowHairShade { get; set; }
 
+        public bool ApplyBRM { get; set; }
+
         public int WeaponIndex { get; set; }
         public int WeaponType { get; set; }
         public int EarType { get; set; }
@@ -166,6 +168,22 @@ namespace WzComparerR2.Avatar
                         break;
                 }
             }
+
+            return true;
+        }
+
+        public bool LoadChairActions() // 의자 아이템의 행동 이름
+        {
+            this.TamingActions.Clear();
+
+            Wz_Node tamingNode = this.Taming == null ? null : this.Taming.Node;
+
+            if (tamingNode == null)
+            {
+                return false;
+            }
+
+            this.TamingActions.Add("effect");
 
             return true;
         }
@@ -315,6 +333,20 @@ namespace WzComparerR2.Avatar
             return part;
         }
 
+        public AvatarPart AddChairPart(Wz_Node imgNode, BitmapOrigin forceIcon, int forceID, Wz_Vector brm, bool forceAct)  // 의자 아이템 패널 표시 설정
+        {
+            Wz_Node infoNode = imgNode.FindNodeByPath("info");
+            if (infoNode == null)
+            {
+                return null;
+            }
+            AvatarPart part = new AvatarPart(imgNode, forceIcon, forceID, brm, forceAct);
+
+            this.Taming = part;
+
+            return part;
+        }
+
         /// <summary>
         /// 获取角色动作的动画帧。
         /// </summary>
@@ -455,6 +487,14 @@ namespace WzComparerR2.Avatar
             List<ActionFrame> frames = new List<ActionFrame>();
             if (this.Taming != null)
             {
+                if (action == "effect") // 의자 아이템
+                {
+                    if ((this.Taming.Node.FindNodeByPath(action)?.Nodes.Count ?? 0) < this.Taming.Node.FindNodeByPath("effect2")?.Nodes.Count)
+                    {
+                        action = "effect2";
+                    }
+                }
+
                 var actionNode = this.Taming.Node.FindNodeByPath(action);
                 frames.AddRange(LoadStandardFrames(actionNode, action));
             }
@@ -466,7 +506,15 @@ namespace WzComparerR2.Avatar
             var actionNode = this.Taming?.Node.Nodes[action]?.ResolveUol();
             if (actionNode == null)
             {
-                return null;
+                if (action == "effect") // 의자 아이템
+                {
+                    actionNode = this.Taming?.Node.Nodes["effect2"]?.ResolveUol();
+                }
+
+                if (actionNode == null)
+                {
+                    return null;
+                }
             }
 
             var frameNode = actionNode.Nodes[frameIndex.ToString()];
@@ -712,6 +760,62 @@ namespace WzComparerR2.Avatar
                 while (linkPartMixNode?.Value is Wz_Uol)
                 {
                     linkPartMixNode = linkPartMixNode.GetValue<Wz_Uol>().HandleUol(linkPartMixNode);
+                }
+
+                if (linkPartNode.Value is Wz_Png) // 의자 아이템 이미지 로드
+                {
+                    string frameIdx = linkPartNode.Text;
+                    Wz_Node gpNode = linkPartNode.ParentNode.ParentNode;
+                    List<string> actionList = new List<string> { "effect", "effect2" };
+
+                    foreach (string action in actionList)
+                    {
+                        Wz_Node eff = gpNode?.Nodes[action]?.Nodes[frameIdx];
+                        Skin skin = new Skin();
+                        skin.Name = frameIdx;
+
+                        if (eff != null)
+                        {
+                            skin.Image = BitmapOrigin.CreateFromNode(eff, PluginBase.PluginManager.FindWz);
+                        }
+                        else skin.Image = BitmapOrigin.CreateFromNode(gpNode?.Nodes[action]?.Nodes["0"], PluginBase.PluginManager.FindWz);
+
+                        var zIndex = gpNode?.Nodes[action]?.FindNodeByPath("z")?.GetValueEx<int?>(null);
+                        skin.ZIndex = zIndex ?? 0;
+
+                        if (this.Taming.bodyRelMove != null)
+                        {
+                            skin.Offset = new Point(0, 0);
+
+                            bool applyb = false;
+                            string pos = gpNode?.Nodes[action]?.FindNodeByPath("pos")?.GetValueEx<string>(null);
+                            if (pos == "1" && !this.Taming.forceAction)
+                            {
+                                skin.Offset += (Size)new Point(-5, -48);
+                            }
+                            else if (pos == "3" || this.Taming.forceAction)
+                            {
+                                applyb = true;
+                            }
+
+                            if (this.ApplyBRM)
+                            {
+                                applyb = !applyb;
+                            }
+
+                            if (applyb)
+                            {
+                                skin.Offset += (Size)new Point(-this.Taming.bodyRelMove.X, -this.Taming.bodyRelMove.Y);
+                            }
+                        }
+
+                        if (skin.Image.Bitmap != null)
+                        {
+                            root.Skins.Add(skin);
+                        }
+                    }
+
+                    return;
                 }
 
                 foreach (Wz_Node childNode in linkPartNode.Nodes) //分析部件
@@ -1280,6 +1384,26 @@ namespace WzComparerR2.Avatar
                     while ((uol = actionNode.GetValueEx<Wz_Uol>(null)) != null)
                     {
                         actionNode = uol.HandleUol(actionNode);
+                    }
+                }
+            }
+
+            if (actionFrame.Action == "effect" && actionNode == null) // 의자 아이템 프레임 정보 찾기
+            {
+                actionNode = parent;
+
+                foreach (var path in new[] { "effect2", actionFrame.Frame.ToString() })
+                {
+                    if (actionNode != null && !string.IsNullOrEmpty(path))
+                    {
+                        actionNode = actionNode.FindNodeByPath(path);
+
+                        //处理uol
+                        Wz_Uol uol;
+                        while ((uol = actionNode.GetValueEx<Wz_Uol>(null)) != null)
+                        {
+                            actionNode = uol.HandleUol(actionNode);
+                        }
                     }
                 }
             }

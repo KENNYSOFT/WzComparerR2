@@ -56,6 +56,7 @@
             this.cmbActionBody = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.chkHairShade = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.chkHairCover = new DevComponents.DotNetBar.Controls.CheckBoxX();
+            this.chkApplyBRM = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.dockContainerItem2 = new DevComponents.DotNetBar.DockContainerItem();
             this.dockSite8 = new DevComponents.DotNetBar.DockSite();
             this.dockSite5 = new DevComponents.DotNetBar.DockSite();
@@ -255,6 +256,7 @@
             this.panelDockContainer2.Controls.Add(this.cmbActionBody);
             this.panelDockContainer2.Controls.Add(this.chkHairShade);
             this.panelDockContainer2.Controls.Add(this.chkHairCover);
+            this.panelDockContainer2.Controls.Add(this.chkApplyBRM);
             this.panelDockContainer2.Controls.Add(this.labelX5);
             this.panelDockContainer2.DisabledBackColor = System.Drawing.Color.Empty;
             this.panelDockContainer2.Location = new System.Drawing.Point(3, 23);
@@ -528,6 +530,22 @@
             this.chkHairCover.Text = "머리눌림";
             this.chkHairCover.CheckedChanged += new System.EventHandler(this.chkHairCover_CheckedChanged);
             // 
+            // chkApplyBRM
+            // 
+            this.chkApplyBRM.AutoSize = true;
+            this.chkApplyBRM.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.chkApplyBRM.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.chkApplyBRM.Location = new System.Drawing.Point(5, 128);
+            this.chkApplyBRM.Name = "chkApplyBRM";
+            this.chkApplyBRM.Size = new System.Drawing.Size(150, 19);
+            this.chkApplyBRM.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.chkApplyBRM.TabIndex = 16;
+            this.chkApplyBRM.Text = "플레이어 위치 조정 (의자)";
+            this.chkApplyBRM.CheckedChanged += new System.EventHandler(this.chkApplyBRM_CheckedChanged);
+            // 
             // dockContainerItem2
             // 
             this.dockContainerItem2.Control = this.panelDockContainer2;
@@ -774,6 +792,7 @@
         private System.Windows.Forms.Timer timer1;
         private AvatarContainer avatarContainer1;
         private DevComponents.DotNetBar.Controls.CheckBoxX chkHairCover;
+        private DevComponents.DotNetBar.Controls.CheckBoxX chkApplyBRM;
         private DevComponents.DotNetBar.Controls.ComboBoxEx cmbWeaponIdx;
         private DevComponents.DotNetBar.Controls.ComboBoxEx cmbWeaponType;
         private DevComponents.DotNetBar.LabelX labelX4;
